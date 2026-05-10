@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的</title>
+    <style>
+        /* ===== 颜色变量：亮色模式（默认） ===== */
+        :root {
+            --bg:            #fafafa;
+            --text:          #333;
+            --text-secondary:#666;
+            --heading:       #111;
+            --card-bg:       #fff;
+            --card-border:   #e5e7eb;
+            --card-cover:    #f3f4f6;
+            --card-cover-icon:#9ca3af;
+            --nav-bg:        rgba(255,255,255,0.95);
+            --nav-border:    #e5e7eb;
+            --nav-link:      #555;
+            --nav-link-hover:#111;
+            --tag-bg:        #f0f5ff;
+            --tag-text:      #2563eb;
+            --icon-bg:       #f3f4f6;
+            --footer-text:   #999;
+            --footer-border: #e5e7eb;
+            --link:          #2563eb;
+            --shadow:        rgba(0,0,0,0.08);
+            --toggle-bg:     #e5e7eb;
+            --toggle-dot:    #fff;
+        }
+
+        /* ===== 颜色变量：暗色模式 ===== */
+        [data-theme="dark"] {
+            --bg:            #0f172a;
+            --text:          #cbd5e1;
+            --text-secondary:#94a3b8;
+            --heading:       #f1f5f9;
+            --card-bg:       #1e293b;
+            --card-border:   #334155;
+            --card-cover:    #1e293b;
+            --card-cover-icon:#64748b;
+            --nav-bg:        rgba(15,23,42,0.95);
+            --nav-border:    #1e293b;
+            --nav-link:      #94a3b8;
+            --nav-link-hover:#f1f5f9;
+            --tag-bg:        #1e3a5f;
+            --tag-text:      #60a5fa;
+            --icon-bg:       #1e293b;
+            --footer-text:   #64748b;
+            --footer-border: #1e293b;
+            --link:          #60a5fa;
+            --shadow:        rgba(0,0,0,0.4);
+            --toggle-bg:     #334155;
+            --toggle-dot:    #f1f5f9;
+        }
+
+        /* ===== 切换过渡动画 ===== */
+        body, nav, .work-card, .work-card .cover, .contact-item .icon,
+        .tag, footer, a, .hero .avatar {
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* ===== 基础样式 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: none;
+        }
+
+        /* ===== 导航栏 ===== */
+        nav {
+            position: sticky;
+            top: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--nav-border);
+            padding: 16px 0;
+            z-index: 100;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--heading);
+        }
+
+        nav .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        nav .links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        nav .links a {
+            color: var(--nav-link);
+            font-size: 15px;
+        }
+
+        nav .links a:hover {
+            color: var(--nav-link-hover);
+        }
+
+        /* ===== 暗色模式切换按钮 ===== */
+        .theme-toggle {
+            background: var(--toggle-bg);
+            border: none;
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--toggle-dot);
+            transition: transform 0.3s;
+        }
+
+        /* 暗色模式下圆点滑到右边 */
+        [data-theme="dark"] .theme-toggle::after {
+            transform: translateX(20px);
+        }
+
+        /* ===== 通用容器 ===== */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--heading);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        /* ===== 顶部区域 ===== */
+        .hero {
+            text-align: center;
+            padding: 100px 0 80px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--heading);
+            margin-bottom: 16px;
+        }
+
+        .hero .subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .hero .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--icon-bg);
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--card-cover-icon);
+        }
+
+        /* ===== 关于 ===== */
+        .about-text {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 17px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== 作品卡片 ===== */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .work-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s, border-color 0.3s;
+        }
+
+        .work-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px var(--shadow);
+        }
+
+        .work-card .cover {
+            height: 200px;
+            background: var(--card-cover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--card-cover-icon);
+            font-size: 40px;
+        }
+
+        .work-card .info {
+            padding: 20px;
+        }
+
+        .work-card .info h3 {
+            font-size: 18px;
+            color: var(--heading);
+            margin-bottom: 8px;
+        }
+
+        .work-card .info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .work-card .tags {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .work-card .tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            border-radius: 20px;
+        }
+
+        /* ===== 联系方式 ===== */
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .contact-item .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--icon-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        /* ===== 页脚 ===== */
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            border-top: 1px solid var(--footer-border);
+            color: var(--footer-text);
+            font-size: 14px;
+        }
+
+        /* ===== 滚动动画 ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-10px); }
+        }
+
+        /* 初始隐藏，等滚动到了再显示 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 卡片依次延迟出现 */
+        .work-card:nth-child(1) { transition-delay: 0s; }
+        .work-card:nth-child(2) { transition-delay: 0.1s; }
+        .work-card:nth-child(3) { transition-delay: 0.2s; }
+        .work-card:nth-child(4) { transition-delay: 0.3s; }
+
+        /* 头像浮动 */
+        .hero .avatar {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* ===== 可点击卡片 ===== */
+        .work-card.clickable {
+            cursor: pointer;
+        }
+
+        .work-card.clickable:hover .cover {
+            transform: scale(1.05);
+            transition: transform 0.3s;
+        }
+
+        /* ===== 弹出窗口（模态框） ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border-radius: 16px;
+            max-width: 520px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px var(--shadow);
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 28px 16px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .modal-header h3 {
+            font-size: 22px;
+            color: var(--heading);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--card-cover);
+        }
+
+        .modal-body {
+            padding: 20px 28px 28px;
+        }
+
+        .modal-group {
+            margin-bottom: 20px;
+        }
+
+        .modal-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-group-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--heading);
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--link);
+            display: inline-block;
+        }
+
+        .modal-link {
+            display: block;
+            padding: 10px 14px;
+            margin: 4px 0;
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 15px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .modal-link:hover {
+            background: var(--tag-bg);
+            color: var(--tag-text);
+        }
+
+        .modal-link .arrow {
+            float: right;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .modal-link:hover .arrow {
+            opacity: 1;
+        }
+
+        /* ===== 响应式：手机端适配 ===== */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 32px; }
+            .hero .subtitle { font-size: 16px; }
+            nav .links { gap: 16px; }
+            section { padding: 48px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav>
+        <div class="container">
+            <div class="logo">🧑‍💻 我的名字</div>
+            <div class="nav-right">
+                <ul class="links">
+                        <li><a href="#works">想看</a></li>
+                    <li><a href="#contact">联系</a></li>
+                </ul>
+                <button class="theme-toggle" id="themeToggle" title="切换亮色/暗色模式"></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 顶部 -->
+    <section class="hero">
+        <div class="container">
+            <div class="avatar reveal">👤</div>
+            <h1 class="reveal">你好，我是 anb</h1>
+            <p class="subtitle reveal">这里展示我的作品和创作历程</p>
+        </div>
+    </section>
+
+<!-- 作品展示 -->
+    <section id="works">
+        <div class="container">
+            <h2 class="section-title reveal">想看的部分</h2>
+            <div class="works-grid">
+
+                <div class="work-card reveal clickable" onclick="openModal()">
+                    <div class="cover">🔌</div>
+                    <div class="info">
+                        <h3>嵌入式</h3>
+                        <p>单片机、ARM、RTOS、驱动开发等相关内容。</p>
+                        <div class="tags">
+                            <span class="tag">STM32</span>
+                            <span class="tag">RTOS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="work-card reveal">
+                    <div class="cover">🤖</div>
+                    <div class="info">
+                        <h3>AI</h3>
+                        <p>人工智能、机器学习、大模型等相关内容。</p>
+                        <div class="tags">
+                            <span class="tag">深度学习</span>
+                            <span class="tag">LLM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="work-card reveal clickable" onclick="openModalGuowai()">
+                    <div class="cover">🌍</div>
+                    <div class="info">
+                        <h3>国外</h3>
+                        <p>海外生活、留学、工作等相关内容。</p>
+                        <div class="tags">
+                            <span class="tag">留学</span>
+                            <span class="tag">海外</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="work-card reveal clickable" onclick="openModalQianzheng()">
+                    <div class="cover">🛂</div>
+                    <div class="info">
+                        <h3>签证</h3>
+                        <p>签证申请、材料准备、经验分享等相关内容。</p>
+                        <div class="tags">
+                            <span class="tag">签证攻略</span>
+                            <span class="tag">出入境</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我 -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title reveal">联系我</h2>
+            <div class="contact-links">
+                <div class="contact-item reveal">
+                    <div class="icon">📧</div>
+                    <span>你的邮箱@example.com</span>
+                </div>
+                <div class="contact-item reveal">
+                    <div class="icon">💬</div>
+                    <span>你的微信</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 我的. 自己动手做的第一个网站 ✌️</p>
+    </footer>
+
+    <!-- ===== 弹出窗口：嵌入式 ===== -->
+    <div class="modal-overlay" id="modalEmbedded">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>🔌 嵌入式</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="modal-group">
+                    <div class="modal-group-title">平衡车</div>
+                    <a class="modal-link" href="https://www.bilibili.com/video/BV1Gc411v73h/?spm_id_from=333.1387.favlist.content.click&vd_source=60a81efb17c69ec688795754cd782b69" target="_blank" rel="noopener">🎬 视频 <span class="arrow">→</span></a>
+                    <a class="modal-link" href="https://www.bilibili.com/video/BV1zx4y1y7ZR/?spm_id_from=333.1387.homepage.video_card.click&vd_source=60a81efb17c69ec688795754cd782b69" target="_blank" rel="noopener">💻 软件篇 <span class="arrow">→</span></a>
+                    <a class="modal-link" href="https://www.bilibili.com/video/BV1m1421X7EF/?spm_id_from=333.1387.homepage.video_card.click&vd_source=60a81efb17c69ec688795754cd782b69" target="_blank" rel="noopener">📟 PCB篇 <span class="arrow">→</span></a>
+                </div>
+
+                <div class="modal-group">
+                    <div class="modal-group-title">野火</div>
+                    <a class="modal-link" href="https://www.bilibili.com/video/BV1ZmGQzsE4N?spm_id_from=333.788.videopod.episodes&vd_source=60a81efb17c69ec688795754cd782b69&p=67" target="_blank" rel="noopener">🎬 视频教程 <span class="arrow">→</span></a>
+                </div>
+
+                <div class="modal-group">
+                    <div class="modal-group-title">江协</div>
+                    <a class="modal-link" href="https://space.bilibili.com/383400717?spm_id_from=333.337.0.0" target="_blank" rel="noopener">👤 B站主页 <span class="arrow">→</span></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 弹出窗口：国外 ===== -->
+    <div class="modal-overlay" id="modalGuowai">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>🌍 国外</h3>
+                <button class="modal-close" onclick="closeModalGuowai()">✕</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="modal-group">
+                    <div class="modal-group-title">油管</div>
+                    <a class="modal-link" href="https://www.youtube.com/" target="_blank" rel="noopener">🎬 YouTube <span class="arrow">→</span></a>
+                </div>
+
+                <div class="modal-group">
+                    <div class="modal-group-title">图书</div>
+                    <a class="modal-link" href="https://z-library.im/?ts=1535" target="_blank" rel="noopener">📚 Z-Library <span class="arrow">→</span></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 弹出窗口：签证 ===== -->
+    <div class="modal-overlay" id="modalQianzheng">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>🛂 签证</h3>
+                <button class="modal-close" onclick="closeModalQianzheng()">✕</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="modal-group">
+                    <div class="modal-group-title">新西兰</div>
+                    <a class="modal-link" href="https://onlineservices.immigration.govt.nz/WorkingHoliday/" target="_blank" rel="noopener">🔗 新西兰 <span class="arrow">→</span></a>
+                </div>
+
+                <div class="modal-group">
+                    <div class="modal-group-title">澳大利亚</div>
+                    <a class="modal-link" href="https://online.immi.gov.au/ola/app" target="_blank" rel="noopener">🔗 澳大利亚 <span class="arrow">→</span></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 暗色模式切换脚本 ===== -->
+    <script>
+        // ===== 弹出窗口：嵌入式 =====
+        const modalEmbedded = document.getElementById('modalEmbedded');
+
+        function openModal() {
+            modalEmbedded.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalEmbedded.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalEmbedded.addEventListener('click', (e) => {
+            if (e.target === modalEmbedded) closeModal();
+        });
+
+        // ===== 弹出窗口：国外 =====
+        const modalGuowai = document.getElementById('modalGuowai');
+
+        function openModalGuowai() {
+            modalGuowai.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModalGuowai() {
+            modalGuowai.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalGuowai.addEventListener('click', (e) => {
+            if (e.target === modalGuowai) closeModalGuowai();
+        });
+
+        // ===== 弹出窗口：签证 =====
+        const modalQianzheng = document.getElementById('modalQianzheng');
+
+        function openModalQianzheng() {
+            modalQianzheng.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModalQianzheng() {
+            modalQianzheng.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalQianzheng.addEventListener('click', (e) => {
+            if (e.target === modalQianzheng) closeModalQianzheng();
+        });
+
+        // 按 ESC 关闭所有弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (modalEmbedded.classList.contains('active')) closeModal();
+                if (modalGuowai.classList.contains('active')) closeModalGuowai();
+                if (modalQianzheng.classList.contains('active')) closeModalQianzheng();
+            }
+        });
+
+        // ===== 暗色模式 =====
+        const toggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'dark') {
+            html.setAttribute('data-theme', 'dark');
+        }
+
+        toggle.addEventListener('click', () => {
+            if (html.hasAttribute('data-theme')) {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // ===== 滚动动画 =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
